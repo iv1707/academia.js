@@ -2,51 +2,89 @@ let alunos = [];
 
 const app = document.getElementById("app");
 
-// =========================
-// Menu principal
-// =========================
+// =====================================
+// MENU PRINCIPAL
+// =====================================
+
 function menuPrincipal() {
 
     app.innerHTML = `
         <h2>===== ACADEMIA =====</h2>
 
-        <button onclick="mostrarCadastro()">
-            1 - Cadastrar Alunos
-        </button>
+        <pre>
+1 - Cadastrar alunos
+2 - Consultar IMC
+3 - Controle de pagamento
+4 - Lista de alunos
+5 - Planos mensais
+9 - Sair
+        </pre>
 
-        <br><br>
+        <p>Digite a opção:</p>
 
-        <button onclick="consultarIMC()">
-            2 - Consultar IMC
-        </button>
+        <input type="number" id="opcaoMenu">
 
-        <br><br>
-
-        <button onclick="controlePagamento()">
-            3 - Controle de Pagamento
-        </button>
-
-        <br><br>
-
-        <button onclick="listarAlunos()">
-            4 - Lista de Alunos
-        </button>
-
-        <br><br>
-
-        <button onclick="mostrarPlanos()">
-            5 - Planos Mensais
+        <button onclick="executarOpcao()">
+            Confirmar
         </button>
     `;
 }
 
-// =========================
-// Tela de cadastro
-// =========================
-function mostrarCadastro() {
+// =====================================
+// EXECUTAR OPÇÃO
+// =====================================
+
+function executarOpcao() {
+
+    let opc = Number(
+        document.getElementById("opcaoMenu").value
+    );
+
+    if (opc == 1) {
+
+        telaCadastro();
+
+    }
+    else if (opc == 2) {
+
+        consultarIMC();
+
+    }
+    else if (opc == 3) {
+
+        controlePagamento();
+
+    }
+    else if (opc == 4) {
+
+        listarAlunos();
+
+    }
+    else if (opc == 5) {
+
+        mostrarPlanos();
+
+    }
+    else if (opc == 9) {
+
+        app.innerHTML = `
+            <h2>Programa encerrado.</h2>
+        `;
+    }
+    else {
+
+        alert("Opção inválida!");
+    }
+}
+
+// =====================================
+// TELA DE CADASTRO
+// =====================================
+
+function telaCadastro() {
 
     app.innerHTML = `
-        <h2>Cadastro de Alunos</h2>
+        <h2>===== CADASTRO DE ALUNOS =====</h2>
 
         <p>Nome:</p>
         <input id="nome">
@@ -54,38 +92,45 @@ function mostrarCadastro() {
         <p>Idade:</p>
         <input id="idade" type="number">
 
-        <p>Peso (kg):</p>
+        <p>Peso:</p>
         <input id="peso" type="number">
 
-        <p>Altura (m):</p>
+        <p>Altura:</p>
         <input id="altura" type="number" step="0.01">
 
-        <p>Plano:</p>
+        <pre>
+PLANOS DISPONÍVEIS
 
-        <select id="plano">
-            <option value="1">Básico - R$ 80</option>
-            <option value="2">Premium - R$ 120</option>
-            <option value="3">VIP - R$ 180</option>
-        </select>
+1 - Básico (R$ 80)
+2 - Premium (R$ 120)
+3 - VIP (R$ 180)
+0 - Voltar
+        </pre>
+
+        <p>Escolha o plano:</p>
+
+        <input id="plano" type="number">
 
         <br><br>
 
         <button onclick="cadastrarAluno()">
-            Salvar Aluno
+            Salvar
         </button>
 
         <button onclick="menuPrincipal()">
-            Voltar
+            0 - Voltar
         </button>
     `;
 }
 
-// =========================
-// Cadastrar aluno
-// =========================
+// =====================================
+// CADASTRAR ALUNO
+// =====================================
+
 function cadastrarAluno() {
 
-    let nome = document.getElementById("nome").value;
+    let nome =
+        document.getElementById("nome").value;
 
     let idade = Number(
         document.getElementById("idade").value
@@ -99,43 +144,41 @@ function cadastrarAluno() {
         document.getElementById("altura").value
     );
 
-    let opcPlano =
-        document.getElementById("plano").value;
+    let opcPlano = Number(
+        document.getElementById("plano").value
+    );
 
-    if (
-        nome == "" ||
-        idade <= 0 ||
-        peso <= 0 ||
-        altura <= 0
-    ) {
+    if (opcPlano == 0) {
 
-        alert("Preencha todos os campos!");
-
+        menuPrincipal();
         return;
     }
 
     let plano = "";
     let valorPlano = 0;
 
-    if (opcPlano == "1") {
+    if (opcPlano == 1) {
 
         plano = "Básico";
         valorPlano = 80;
-
     }
-    else if (opcPlano == "2") {
+    else if (opcPlano == 2) {
 
         plano = "Premium";
         valorPlano = 120;
-
     }
-    else {
+    else if (opcPlano == 3) {
 
         plano = "VIP";
         valorPlano = 180;
     }
+    else {
 
-    let aluno = {
+        alert("Plano inválido!");
+        return;
+    }
+
+    alunos.push({
 
         nome: nome,
         idade: idade,
@@ -144,28 +187,27 @@ function cadastrarAluno() {
         plano: plano,
         valorPlano: valorPlano,
         pagamento: "Não pago"
-    };
-
-    alunos.push(aluno);
+    });
 
     alert("Aluno cadastrado com sucesso!");
 
     menuPrincipal();
 }
 
-// =========================
-// Consultar IMC
-// =========================
+// =====================================
+// CONSULTAR IMC
+// =====================================
+
 function consultarIMC() {
 
     let html = `
-        <h2>Consulta de IMC</h2>
+        <h2>===== CONSULTA DE IMC =====</h2>
     `;
 
     if (alunos.length == 0) {
 
         html += `
-            <p>Nenhum aluno cadastrado.</p>
+            <p>Nenhum aluno cadastrado!</p>
         `;
     }
     else {
@@ -202,46 +244,142 @@ function consultarIMC() {
             html += `
                 <hr>
 
-                <p>
-                    <b>${alunos[i].nome}</b>
-                </p>
-
-                <p>
-                    IMC:
-                    ${imc.toFixed(2)}
-                </p>
-
-                <p>
-                    ${classificacao}
-                </p>
+                <p>Nome: ${alunos[i].nome}</p>
+                <p>IMC: ${imc.toFixed(2)}</p>
+                <p>Classificação: ${classificacao}</p>
             `;
         }
     }
 
     html += `
         <br>
-
         <button onclick="menuPrincipal()">
-            Voltar
+            0 - Voltar
         </button>
     `;
 
     app.innerHTML = html;
 }
 
-// =========================
-// Controle de pagamento
-// =========================
+// =====================================
+// CONTROLE DE PAGAMENTO
+// =====================================
+
 function controlePagamento() {
 
     let html = `
-        <h2>Controle de Pagamento</h2>
+        <h2>===== CONTROLE DE PAGAMENTO =====</h2>
     `;
 
     if (alunos.length == 0) {
 
         html += `
-            <p>Nenhum aluno cadastrado.</p>
+            <p>Nenhum aluno cadastrado!</p>
+
+            <button onclick="menuPrincipal()">
+                0 - Voltar
+            </button>
+        `;
+
+        app.innerHTML = html;
+        return;
+    }
+
+    for (let i = 0; i < alunos.length; i++) {
+
+        html += `
+            <hr>
+
+            <p>
+                ${i + 1} - ${alunos[i].nome}
+            </p>
+
+            <p>
+                Plano:
+                ${alunos[i].plano}
+                (R$ ${alunos[i].valorPlano})
+            </p>
+
+            <p>
+                Pagamento:
+                ${alunos[i].pagamento}
+            </p>
+        `;
+    }
+
+    html += `
+        <p>
+            Digite o número do aluno que pagou:
+        </p>
+
+        <input
+            type="number"
+            id="alunoPago"
+        >
+
+        <br><br>
+
+        <button onclick="registrarPagamento()">
+            Confirmar
+        </button>
+
+        <button onclick="menuPrincipal()">
+            0 - Voltar
+        </button>
+    `;
+
+    app.innerHTML = html;
+}
+
+// =====================================
+// REGISTRAR PAGAMENTO
+// =====================================
+
+function registrarPagamento() {
+
+    let escolha = Number(
+        document.getElementById(
+            "alunoPago"
+        ).value
+    );
+
+    if (
+        escolha >= 1 &&
+        escolha <= alunos.length
+    ) {
+
+        alunos[
+            escolha - 1
+        ].pagamento = "Pago";
+
+        alert(
+            "Pagamento registrado!"
+        );
+
+        controlePagamento();
+    }
+    else {
+
+        alert(
+            "Aluno não encontrado!"
+        );
+    }
+}
+
+// =====================================
+// LISTA DE ALUNOS
+// =====================================
+
+function listarAlunos() {
+
+    let html = `
+        <h2>===== LISTA DE ALUNOS =====</h2>
+    `;
+
+    if (alunos.length == 0) {
+
+        html += `
+            <p>Nenhum aluno cadastrado!</p>
         `;
     }
     else {
@@ -252,170 +390,84 @@ function controlePagamento() {
                 <hr>
 
                 <p>
-                    <b>${alunos[i].nome}</b>
+                    Nome:
+                    ${alunos[i].nome}
+                </p>
+
+                <p>
+                    Idade:
+                    ${alunos[i].idade}
+                </p>
+
+                <p>
+                    Peso:
+                    ${alunos[i].peso}
+                </p>
+
+                <p>
+                    Altura:
+                    ${alunos[i].altura}
                 </p>
 
                 <p>
                     Plano:
                     ${alunos[i].plano}
-                    (R$ ${alunos[i].valorPlano})
+                    (R$
+                    ${alunos[i].valorPlano})
                 </p>
 
                 <p>
                     Pagamento:
                     ${alunos[i].pagamento}
                 </p>
-
-                <button onclick="registrarPagamento(${i})">
-                    Marcar como Pago
-                </button>
             `;
         }
     }
 
     html += `
-        <br><br>
-
-        <button onclick="menuPrincipal()">
-            Voltar
-        </button>
-    `;
-
-    app.innerHTML = html;
-}
-
-// =========================
-// Registrar pagamento
-// =========================
-function registrarPagamento(indice) {
-
-    alunos[indice].pagamento = "Pago";
-
-    alert("Pagamento registrado com sucesso!");
-
-    controlePagamento();
-}
-
-// =========================
-// Lista de alunos
-// =========================
-function listarAlunos() {
-
-    let html = `
-        <h2>Lista de Alunos</h2>
-    `;
-
-    if (alunos.length == 0) {
-
-        html += `
-            <p>Nenhum aluno cadastrado.</p>
-        `;
-    }
-    else {
-
-        for (let i = 0; i < alunos.length; i++) {
-
-            html += `
-                <hr>
-
-                <p>
-                    <b>Nome:</b>
-                    ${alunos[i].nome}
-                </p>
-
-                <p>
-                    <b>Idade:</b>
-                    ${alunos[i].idade}
-                </p>
-
-                <p>
-                    <b>Peso:</b>
-                    ${alunos[i].peso} kg
-                </p>
-
-                <p>
-                    <b>Altura:</b>
-                    ${alunos[i].altura} m
-                </p>
-
-                <p>
-                    <b>Plano:</b>
-                    ${alunos[i].plano}
-                    (R$ ${alunos[i].valorPlano})
-                </p>
-
-                <p>
-                    <b>Pagamento:</b>
-                    ${alunos[i].pagamento}
-                </p>
-            `;
-        }
-    }
-
-    html += `
-        <br><br>
-
-        <button onclick="menuPrincipal()">
-            Voltar
-        </button>
-    `;
-
-    app.innerHTML = html;
-}
-
-// =========================
-// Planos mensais
-// =========================
-function mostrarPlanos() {
-
-    app.innerHTML = `
-        <h2>Planos Mensais</h2>
-
-        <hr>
-
-        <h3>1 - Básico</h3>
-
-        <p>
-            Musculação
-        </p>
-
-        <p>
-            R$ 80 por mês
-        </p>
-
-        <hr>
-
-        <h3>2 - Premium</h3>
-
-        <p>
-            Musculação + Aeróbico
-        </p>
-
-        <p>
-            R$ 120 por mês
-        </p>
-
-        <hr>
-
-        <h3>3 - VIP</h3>
-
-        <p>
-            Acesso total + Personal
-        </p>
-
-        <p>
-            R$ 180 por mês
-        </p>
-
         <br>
 
         <button onclick="menuPrincipal()">
-            Voltar
+            0 - Voltar
+        </button>
+    `;
+
+    app.innerHTML = html;
+}
+
+// =====================================
+// PLANOS MENSAIS
+// =====================================
+
+function mostrarPlanos() {
+
+    app.innerHTML = `
+        <h2>
+            ===== PLANOS MENSAIS =====
+        </h2>
+
+        <pre>
+1 - BÁSICO
+Musculação
+R$ 80 por mês
+
+2 - PREMIUM
+Musculação + Aeróbico
+R$ 120 por mês
+
+3 - VIP
+Acesso total + Personal
+R$ 180 por mês
+        </pre>
+
+        <button onclick="menuPrincipal()">
+            0 - Voltar
         </button>
     `;
 }
 
-// =========================
-// Iniciar sistema
-// =========================
+// =====================================
+// INICIAR SISTEMA
+// =====================================
+
 menuPrincipal();
