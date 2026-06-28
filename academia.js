@@ -1,264 +1,153 @@
+
+
 let alunos = [];
 
-const app = document.getElementById("app");
-
 // =====================================
-// MENU PRINCIPAL
+// CADASTRAR ALUNOS
 // =====================================
 
-function menuPrincipal() {
+function cadastrarAlunos() {
 
-    app.innerHTML = `
-        <h2>===== ACADEMIA =====</h2>
+    let resposta = "s";
 
-        <pre>
-1 - Cadastrar alunos
-2 - Consultar IMC
-3 - Controle de pagamento
-4 - Lista de alunos
-5 - Planos mensais
-9 - Sair
-        </pre>
+    while (resposta.toLowerCase() == "s") {
 
-        <p>Digite a opção:</p>
+        let nome = prompt(
+            "===== CADASTRO DE ALUNOS =====\n\n" +
+            "Digite 0 para voltar.\n\n" +
+            "Nome do aluno:"
+        );
 
-        <input type="number" id="opcaoMenu">
+        if (nome == null || nome == "0") {
+            return;
+        }
 
-        <button onclick="executarOpcao()">
-            Confirmar
-        </button>
-    `;
-}
+        let idade = Number(prompt("Digite a idade:"));
 
-// =====================================
-// EXECUTAR OPÇÃO
-// =====================================
+        let peso = Number(prompt("Digite o peso:"));
 
-function executarOpcao() {
+        let altura = Number(prompt("Digite a altura:"));
 
-    let opc = Number(
-        document.getElementById("opcaoMenu").value
-    );
+        let opcPlano = Number(
+            prompt(
+                "PLANOS DISPONÍVEIS\n\n" +
+                "1 - Básico (R$ 80)\n" +
+                "2 - Premium (R$ 120)\n" +
+                "3 - VIP (R$ 180)\n\n" +
+                "0 - Voltar\n\n" +
+                "Escolha o plano:"
+            )
+        );
 
-    if (opc == 1) {
+        if (opcPlano == 0) {
+            return;
+        }
 
-        telaCadastro();
+        let plano = "";
+        let valorPlano = 0;
 
+        if (opcPlano == 1) {
+
+            plano = "Básico";
+            valorPlano = 80;
+
+        }
+        else if (opcPlano == 2) {
+
+            plano = "Premium";
+            valorPlano = 120;
+
+        }
+        else if (opcPlano == 3) {
+
+            plano = "VIP";
+            valorPlano = 180;
+
+        }
+        else {
+
+            alert("Plano inválido!");
+            continue;
+        }
+
+        let aluno = {
+
+            nome: nome,
+            idade: idade,
+            peso: peso,
+            altura: altura,
+            plano: plano,
+            valorPlano: valorPlano,
+            pagamento: "Não pago"
+        };
+
+        alunos.push(aluno);
+
+        alert("Aluno cadastrado com sucesso!");
+
+        resposta = prompt(
+            "Deseja cadastrar outro aluno?\n\n" +
+            "S - Sim\n" +
+            "N - Não\n" +
+            "0 - Voltar"
+        );
+
+        if (resposta == null || resposta == "0") {
+            return;
+        }
     }
-    else if (opc == 2) {
-
-        consultarIMC();
-
-    }
-    else if (opc == 3) {
-
-        controlePagamento();
-
-    }
-    else if (opc == 4) {
-
-        listarAlunos();
-
-    }
-    else if (opc == 5) {
-
-        mostrarPlanos();
-
-    }
-    else if (opc == 9) {
-
-        app.innerHTML = `
-            <h2>Programa encerrado.</h2>
-        `;
-    }
-    else {
-
-        alert("Opção inválida!");
-    }
-}
-
-// =====================================
-// TELA DE CADASTRO
-// =====================================
-
-function telaCadastro() {
-
-    app.innerHTML = `
-        <h2>===== CADASTRO DE ALUNOS =====</h2>
-
-        <p>Nome:</p>
-        <input id="nome">
-
-        <p>Idade:</p>
-        <input id="idade" type="number">
-
-        <p>Peso:</p>
-        <input id="peso" type="number">
-
-        <p>Altura:</p>
-        <input id="altura" type="number" step="0.01">
-
-        <pre>
-PLANOS DISPONÍVEIS
-
-1 - Básico (R$ 80)
-2 - Premium (R$ 120)
-3 - VIP (R$ 180)
-0 - Voltar
-        </pre>
-
-        <p>Escolha o plano:</p>
-
-        <input id="plano" type="number">
-
-        <br><br>
-
-        <button onclick="cadastrarAluno()">
-            Salvar
-        </button>
-
-        <button onclick="menuPrincipal()">
-            0 - Voltar
-        </button>
-    `;
-}
-
-// =====================================
-// CADASTRAR ALUNO
-// =====================================
-
-function cadastrarAluno() {
-
-    let nome =
-        document.getElementById("nome").value;
-
-    let idade = Number(
-        document.getElementById("idade").value
-    );
-
-    let peso = Number(
-        document.getElementById("peso").value
-    );
-
-    let altura = Number(
-        document.getElementById("altura").value
-    );
-
-    let opcPlano = Number(
-        document.getElementById("plano").value
-    );
-
-    if (opcPlano == 0) {
-
-        menuPrincipal();
-        return;
-    }
-
-    let plano = "";
-    let valorPlano = 0;
-
-    if (opcPlano == 1) {
-
-        plano = "Básico";
-        valorPlano = 80;
-    }
-    else if (opcPlano == 2) {
-
-        plano = "Premium";
-        valorPlano = 120;
-    }
-    else if (opcPlano == 3) {
-
-        plano = "VIP";
-        valorPlano = 180;
-    }
-    else {
-
-        alert("Plano inválido!");
-        return;
-    }
-
-    alunos.push({
-
-        nome: nome,
-        idade: idade,
-        peso: peso,
-        altura: altura,
-        plano: plano,
-        valorPlano: valorPlano,
-        pagamento: "Não pago"
-    });
-
-    alert("Aluno cadastrado com sucesso!");
-
-    menuPrincipal();
 }
 
 // =====================================
 // CONSULTAR IMC
 // =====================================
 
-function consultarIMC() {
-
-    let html = `
-        <h2>===== CONSULTA DE IMC =====</h2>
-    `;
+function calcularIMC() {
 
     if (alunos.length == 0) {
 
-        html += `
-            <p>Nenhum aluno cadastrado!</p>
-        `;
+        alert("Nenhum aluno cadastrado!");
+        return;
     }
-    else {
 
-        for (let i = 0; i < alunos.length; i++) {
+    let texto = "===== CONSULTA DE IMC =====\n";
 
-            let imc =
-                alunos[i].peso /
-                (alunos[i].altura * alunos[i].altura);
+    for (let i = 0; i < alunos.length; i++) {
 
-            let classificacao = "";
+        let imc =
+            alunos[i].peso /
+            (alunos[i].altura * alunos[i].altura);
 
-            if (imc < 18.5) {
+        let classificacao = "";
 
-                classificacao =
-                    "Abaixo do peso";
-            }
-            else if (imc < 25) {
+        if (imc < 18.5) {
 
-                classificacao =
-                    "Peso normal";
-            }
-            else if (imc < 30) {
+            classificacao = "Abaixo do peso";
 
-                classificacao =
-                    "Sobrepeso";
-            }
-            else {
-
-                classificacao =
-                    "Obesidade";
-            }
-
-            html += `
-                <hr>
-
-                <p>Nome: ${alunos[i].nome}</p>
-                <p>IMC: ${imc.toFixed(2)}</p>
-                <p>Classificação: ${classificacao}</p>
-            `;
         }
+        else if (imc < 25) {
+
+            classificacao = "Peso normal";
+
+        }
+        else if (imc < 30) {
+
+            classificacao = "Sobrepeso";
+
+        }
+        else {
+
+            classificacao = "Obesidade";
+        }
+
+        texto +=
+            "\n----------------------\n" +
+            "Nome: " + alunos[i].nome + "\n" +
+            "IMC: " + imc.toFixed(2) + "\n" +
+            "Classificação: " + classificacao + "\n";
     }
 
-    html += `
-        <br>
-        <button onclick="menuPrincipal()">
-            0 - Voltar
-        </button>
-    `;
-
-    app.innerHTML = html;
+    alert(texto);
 }
 
 // =====================================
@@ -267,102 +156,44 @@ function consultarIMC() {
 
 function controlePagamento() {
 
-    let html = `
-        <h2>===== CONTROLE DE PAGAMENTO =====</h2>
-    `;
-
     if (alunos.length == 0) {
 
-        html += `
-            <p>Nenhum aluno cadastrado!</p>
-
-            <button onclick="menuPrincipal()">
-                0 - Voltar
-            </button>
-        `;
-
-        app.innerHTML = html;
+        alert("Nenhum aluno cadastrado!");
         return;
     }
 
+    let texto = "===== CONTROLE DE PAGAMENTO =====\n\n";
+
     for (let i = 0; i < alunos.length; i++) {
 
-        html += `
-            <hr>
-
-            <p>
-                ${i + 1} - ${alunos[i].nome}
-            </p>
-
-            <p>
-                Plano:
-                ${alunos[i].plano}
-                (R$ ${alunos[i].valorPlano})
-            </p>
-
-            <p>
-                Pagamento:
-                ${alunos[i].pagamento}
-            </p>
-        `;
+        texto +=
+            (i + 1) + " - " +
+            alunos[i].nome +
+            " | Plano: " +
+            alunos[i].plano +
+            " (R$ " + alunos[i].valorPlano + ")" +
+            " | " +
+            alunos[i].pagamento +
+            "\n";
     }
 
-    html += `
-        <p>
-            Digite o número do aluno que pagou:
-        </p>
+    texto += "\nDigite 0 para voltar.";
 
-        <input
-            type="number"
-            id="alunoPago"
-        >
+    let escolha = Number(prompt(texto));
 
-        <br><br>
+    if (escolha == 0 || isNaN(escolha)) {
+        return;
+    }
 
-        <button onclick="registrarPagamento()">
-            Confirmar
-        </button>
+    if (escolha >= 1 && escolha <= alunos.length) {
 
-        <button onclick="menuPrincipal()">
-            0 - Voltar
-        </button>
-    `;
+        alunos[escolha - 1].pagamento = "Pago";
 
-    app.innerHTML = html;
-}
-
-// =====================================
-// REGISTRAR PAGAMENTO
-// =====================================
-
-function registrarPagamento() {
-
-    let escolha = Number(
-        document.getElementById(
-            "alunoPago"
-        ).value
-    );
-
-    if (
-        escolha >= 1 &&
-        escolha <= alunos.length
-    ) {
-
-        alunos[
-            escolha - 1
-        ].pagamento = "Pago";
-
-        alert(
-            "Pagamento registrado!"
-        );
-
-        controlePagamento();
+        alert("Pagamento registrado com sucesso!");
     }
     else {
 
-        alert(
-            "Aluno não encontrado!"
-        );
+        alert("Aluno não encontrado!");
     }
 }
 
@@ -372,67 +203,28 @@ function registrarPagamento() {
 
 function listarAlunos() {
 
-    let html = `
-        <h2>===== LISTA DE ALUNOS =====</h2>
-    `;
-
     if (alunos.length == 0) {
 
-        html += `
-            <p>Nenhum aluno cadastrado!</p>
-        `;
-    }
-    else {
-
-        for (let i = 0; i < alunos.length; i++) {
-
-            html += `
-                <hr>
-
-                <p>
-                    Nome:
-                    ${alunos[i].nome}
-                </p>
-
-                <p>
-                    Idade:
-                    ${alunos[i].idade}
-                </p>
-
-                <p>
-                    Peso:
-                    ${alunos[i].peso}
-                </p>
-
-                <p>
-                    Altura:
-                    ${alunos[i].altura}
-                </p>
-
-                <p>
-                    Plano:
-                    ${alunos[i].plano}
-                    (R$
-                    ${alunos[i].valorPlano})
-                </p>
-
-                <p>
-                    Pagamento:
-                    ${alunos[i].pagamento}
-                </p>
-            `;
-        }
+        alert("Nenhum aluno cadastrado!");
+        return;
     }
 
-    html += `
-        <br>
+    let texto = "===== LISTA DE ALUNOS =====\n";
 
-        <button onclick="menuPrincipal()">
-            0 - Voltar
-        </button>
-    `;
+    for (let i = 0; i < alunos.length; i++) {
 
-    app.innerHTML = html;
+        texto +=
+            "\n----------------------\n" +
+            "Nome: " + alunos[i].nome + "\n" +
+            "Idade: " + alunos[i].idade + "\n" +
+            "Peso: " + alunos[i].peso + "\n" +
+            "Altura: " + alunos[i].altura + "\n" +
+            "Plano: " + alunos[i].plano +
+            " (R$ " + alunos[i].valorPlano + ")\n" +
+            "Pagamento: " + alunos[i].pagamento + "\n";
+    }
+
+    alert(texto);
 }
 
 // =====================================
@@ -441,29 +233,80 @@ function listarAlunos() {
 
 function mostrarPlanos() {
 
-    app.innerHTML = `
-        <h2>
-            ===== PLANOS MENSAIS =====
-        </h2>
+    alert(
+        "===== PLANOS MENSAIS =====\n\n" +
+        "1 - BÁSICO\n" +
+        "Musculação\n" +
+        "R$ 80 por mês\n\n" +
 
-        <pre>
-1 - BÁSICO
-Musculação
-R$ 80 por mês
+        "2 - PREMIUM\n" +
+        "Musculação + Aeróbico\n" +
+        "R$ 120 por mês\n\n" +
 
-2 - PREMIUM
-Musculação + Aeróbico
-R$ 120 por mês
+        "3 - VIP\n" +
+        "Acesso total + Personal\n" +
+        "R$ 180 por mês"
+    );
+}
 
-3 - VIP
-Acesso total + Personal
-R$ 180 por mês
-        </pre>
+// =====================================
+// MENU PRINCIPAL
+// =====================================
 
-        <button onclick="menuPrincipal()">
-            0 - Voltar
-        </button>
-    `;
+function menuPrincipal() {
+
+    let opc = 0;
+
+    while (opc != 9) {
+
+        opc = Number(
+            prompt(
+                "===== ACADEMIA =====\n\n" +
+                "1 - Cadastrar alunos\n" +
+                "2 - Consultar IMC\n" +
+                "3 - Controle de pagamento\n" +
+                "4 - Lista de alunos\n" +
+                "5 - Planos mensais\n" +
+                "9 - Sair\n\n" +
+                "Escolha uma opção:"
+            )
+        );
+
+        if (opc == 1) {
+
+            cadastrarAlunos();
+
+        }
+        else if (opc == 2) {
+
+            calcularIMC();
+
+        }
+        else if (opc == 3) {
+
+            controlePagamento();
+
+        }
+        else if (opc == 4) {
+
+            listarAlunos();
+
+        }
+        else if (opc == 5) {
+
+            mostrarPlanos();
+
+        }
+        else if (opc == 9) {
+
+            alert("Programa encerrado.");
+
+        }
+        else {
+
+            alert("Opção inválida!");
+        }
+    }
 }
 
 // =====================================
